@@ -1,0 +1,217 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Card from '../components/Card.astro';
+
+---
+
+<Layout title="DM Tools.">
+	<main>
+		<h1><span class="text-gradient">D&D 5E</span> DM TOOL </h1>
+		<form class='instructions'>
+			<label for="partySize">Party Size</label>
+			<input type="number" id="partySize" name="partySize" min="0" max="6" value="0">
+
+			<div class="chr1">
+				<label for="chr1">Character 1 Level:</label>
+				<input type="number" id="chr1" name="chr1" min="1" max="20" value="1">
+			</div>
+
+			<div class="chr2">
+				<label for="chr2">Character 2 Level:</label>
+				<input type="number" id="chr2" name="chr2" min="1" max="20" value="1">
+			</div>
+
+			<div class="chr3">
+				<label for="chr3">Character 3 Level:</label>
+				<input type="number" id="chr3" name="chr3" min="1" max="20" value="1">
+			</div>
+
+			<div class="chr4">
+				<label for="chr4">Character 4 Level:</label>
+				<input type="number" id="chr4" name="chr4" min="1" max="20" value="1">
+			</div>
+
+			<div class="chr5">
+				<label for="chr5">Character 5 Level:</label>
+				<input type="number" id="chr5" name="chr5" min="1" max="20" value="1">
+			</div>
+
+			<div class="chr6">
+				<label for="chr6">Character 6 Level:</label>
+				<input type="number" id="chr6" name="chr6" min="1" max="20" value="1">
+			</div>
+			<!-- return total xp needed -->
+			<button type="submit">Calculate</button>
+			<!-- display totalXp -->
+			<div id="totalXp">
+				Total XP: 0
+			</div>
+		</form>
+
+	</main>
+</Layout>
+<code>
+	<script>
+		//toggle character input fields based on party size
+		const partySize = document.getElementById('partySize');
+		const chr1 = document.querySelector('.chr1');
+		const chr2 = document.querySelector('.chr2');
+		const chr3 = document.querySelector('.chr3');
+		const chr4 = document.querySelector('.chr4');
+		const chr5 = document.querySelector('.chr5');
+		const chr6 = document.querySelector('.chr6');
+
+		// hides all character input fields by default
+		chr1.style.display = 'none';
+		chr2.style.display = 'none';
+		chr3.style.display = 'none';
+		chr4.style.display = 'none';
+		chr5.style.display = 'none';
+		chr6.style.display = 'none';
+
+		partySize.addEventListener('change', function() {
+			if (partySize.value == 1) {
+				chr1.style.display = 'block';
+				chr2.style.display = 'none';
+				chr3.style.display = 'none';
+				chr4.style.display = 'none';
+				chr5.style.display = 'none';
+				chr6.style.display = 'none';
+			} else if (partySize.value == 2) {
+				chr1.style.display = 'block';
+				chr2.style.display = 'block';
+				chr3.style.display = 'none';
+				chr4.style.display = 'none';
+				chr5.style.display = 'none';
+				chr6.style.display = 'none';
+			} else if (partySize.value == 3) {
+				chr1.style.display = 'block';
+				chr2.style.display = 'block';
+				chr3.style.display = 'block';
+				chr4.style.display = 'none';
+				chr5.style.display = 'none';
+				chr6.style.display = 'none';
+			} else if (partySize.value == 4) {
+				chr1.style.display = 'block';
+				chr2.style.display = 'block';
+				chr3.style.display = 'block';
+				chr4.style.display = 'block';
+				chr5.style.display = 'none';
+				chr6.style.display = 'none';
+			} else if (partySize.value == 5) {
+				chr1.style.display = 'block';
+				chr2.style.display = 'block';
+				chr3.style.display = 'block';
+				chr4.style.display = 'block';
+				chr5.style.display = 'block';
+				chr6.style.display = 'none';
+			} else if (partySize.value == 6) {
+				chr1.style.display = 'block';
+				chr2.style.display = 'block';
+				chr3.style.display = 'block';
+				chr4.style.display = 'block';
+				chr5.style.display = 'block';
+				chr6.style.display = 'block';
+			}
+		});		
+
+		//based on the party size and each characters level calculate the total party xp needed
+		const totalXp = document.querySelector('.totalXp');
+		const form = document.querySelector('form');
+		
+		form.addEventListener('submit', function(e) {
+			e.preventDefault();
+			let partySize = document.getElementById('partySize').value;
+			let chr1 = document.getElementById('chr1').value;
+			let chr2 = document.getElementById('chr2').value;
+			let chr3 = document.getElementById('chr3').value;
+			let chr4 = document.getElementById('chr4').value;
+			let chr5 = document.getElementById('chr5').value;
+			let chr6 = document.getElementById('chr6').value;
+			let totalXpNeeded = 0;
+			
+			//Define the xp needed for each level
+			let xpNeeded = [0, 300, 900, 2700, 6500, 14000, 23000, 34000, 48000, 64000, 85000, 100000, 120000, 140000, 165000, 195000, 225000, 265000, 305000, 355000];
+
+			//calculate the total xp needed for each character
+			let chr1XpNeeded = xpNeeded[chr1];
+			let chr2XpNeeded = xpNeeded[chr2];
+			let chr3XpNeeded = xpNeeded[chr3];
+			let chr4XpNeeded = xpNeeded[chr4];
+			let chr5XpNeeded = xpNeeded[chr5];
+			let chr6XpNeeded = xpNeeded[chr6];
+			
+			if (partySize == 1){
+				totalXpNeeded = chr1XpNeeded;
+			}
+			else if (partySize == 2){
+				totalXpNeeded = chr1XpNeeded + chr2XpNeeded;
+			}
+			else if (partySize == 3){
+				totalXpNeeded = chr1XpNeeded + chr2XpNeeded + chr3XpNeeded;
+			}
+			else if (partySize == 4){
+				totalXpNeeded = chr1XpNeeded + chr2XpNeeded + chr3XpNeeded + chr4XpNeeded;
+			}
+			else if (partySize == 5){
+				totalXpNeeded = chr1XpNeeded + chr2XpNeeded + chr3XpNeeded + chr4XpNeeded + chr5XpNeeded;
+			}
+			else if (partySize == 6){
+				totalXpNeeded = chr1XpNeeded + chr2XpNeeded + chr3XpNeeded + chr4XpNeeded + chr5XpNeeded + chr6XpNeeded;
+			}
+
+			document.getElementById('totalXp').textContent = 'The Total Xp:' + totalXpNeeded;
+
+		});
+
+
+
+	</script>
+</code>	
+<style>
+	main {
+		margin: auto;
+		padding: 3rem;
+		max-width: 80ch;
+	}
+	h1 {
+		font-size: 3rem;
+		font-weight: 800;
+		margin: 0;
+	}
+	.text-gradient {
+		background-image: var(--accent-gradient);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-size: 400%;
+		background-position: 0%;
+	}
+	.instructions {
+		line-height: 1.6;
+		margin: 1rem 0;
+		border: 1px solid rgba(var(--accent), 25%);
+		background-color: white;
+		padding: 1rem;
+		border-radius: 0.4rem;
+	}
+	.instructions code {
+		font-size: 0.875em;
+		font-weight: bold;
+		background: rgba(var(--accent), 12%);
+		color: rgb(var(--accent));
+		border-radius: 4px;
+		padding: 0.3em 0.45em;
+	}
+	.instructions strong {
+		color: rgb(var(--accent));
+	}
+	.link-card-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+		gap: 1rem;
+		padding: 0;
+	}
+	#hidden {
+		display: none;
+	}
+</style>
