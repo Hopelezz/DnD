@@ -2,7 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
 
-import { XPCalc } from '../scripts/XPCalculator'
+import XPCalc from '../scripts/XPCalculator';
+
 ---
 
 <Layout title="DM Tools.">
@@ -13,137 +14,92 @@ import { XPCalc } from '../scripts/XPCalculator'
 			<h2>Party XP Calculator</h2>
 			<label for="partySize">Party Size</label>
 			<input type="number" id="partySize" name="partySize" min="0" max="6" value="0">
-
-			<div class="chr1">
-				<label for="chr1">Character 1 Level:</label>
-				<input type="number" id="chr1" name="chr1" min="1" max="20" value="1">
+		  
+			<div class="chr1lvl">
+			  <label for="chr1lvl">Character 1 Level:</label>
+			  <input type="number" id="chr1lvl" name="chr1lvl" min="1" max="20" value="1">
 			</div>
-
-			<div class="chr2">
-				<label for="chr2">Character 2 Level:</label>
-				<input type="number" id="chr2" name="chr2" min="1" max="20" value="1">
+		  
+			<div class="chr2lvl">
+			  <label for="chr2lvl">Character 2 Level:</label>
+			  <input type="number" id="chr2lvl" name="chr2lvl" min="1" max="20" value="1">
 			</div>
-
-			<div class="chr3">
-				<label for="chr3">Character 3 Level:</label>
-				<input type="number" id="chr3" name="chr3" min="1" max="20" value="1">
+		  
+			<div class="chr3lvl">
+			  <label for="chr3lvl">Character 3 Level:</label>
+			  <input type="number" id="chr3lvl" name="chr3lvl" min="1" max="20" value="1">
 			</div>
-
-			<div class="chr4">
-				<label for="chr4">Character 4 Level:</label>
-				<input type="number" id="chr4" name="chr4" min="1" max="20" value="1">
+		  
+			<div class="chr4lvl">
+			  <label for="chr4lvl">Character 4 Level:</label>
+			  <input type="number" id="chr4lvl" name="chr4lvl" min="1" max="20" value="1">
 			</div>
-
-			<div class="chr5">
-				<label for="chr5">Character 5 Level:</label>
-				<input type="number" id="chr5" name="chr5" min="1" max="20" value="1">
+		  
+			<div class="chr5lvl">
+			  <label for="chr5lvl">Character 5 Level:</label>
+			  <input type="number" id="chr5lvl" name="chr5lvl" min="1" max="20" value="1">
 			</div>
-
-			<div class="chr6">
-				<label for="chr6">Character 6 Level:</label>
-				<input type="number" id="chr6" name="chr6" min="1" max="20" value="1">
+		  
+			<div class="chr6lvl">
+			  <label for="chr6lvl">Character 6 Level:</label>
+			  <input type="number" id="chr6lvl" name="chr6lvl" min="1" max="20" value="1">
 			</div>
 			<!-- return total xp needed -->
 			<button type="submit">Calculate</button>
-			<!-- display totalXp -->
-			<div><label id="Party">Total XP Needed: 0</label></div>
-			<div><label id="easy">Easy Difficulty: 0</label></div>
-			<div><label id="medium">Medium Difficulty: 0</label></div>
-			<div><label id="hard">Hard Difficulty: 0</label></div>
-			<div><label id="deadly">Deadly Difficulty: 0</label></div>
-
 		</form>
 
+			<!-- display totalXp -->
+			<div><label id="Party">Total XP Needed: 0</label></div>
+			<div><label id="Easy">Easy Difficulty: 0</label></div>
+			<div><label id="Medium">Medium Difficulty: 0</label></div>
+			<div><label id="Hard">Hard Difficulty: 0</label></div>
+			<div><label id="Deadly">Deadly Difficulty: 0</label></div>
+		
 	</main>
 </Layout>
 <code>
 	<script>
-		// get form elements
+		
 		let partySize = document.getElementById('partySize');
-		let chr1 = document.querySelector('.chr1');
-		let chr2 = document.querySelector('.chr2');
-		let chr3 = document.querySelector('.chr3');
-		let chr4 = document.querySelector('.chr4');
-		let chr5 = document.querySelector('.chr5');
-		let chr6 = document.querySelector('.chr6');
-
-		// hides all character input fields by default
-		chr1.style.display = 'none';
-		chr2.style.display = 'none';
-		chr3.style.display = 'none';
-		chr4.style.display = 'none';
-		chr5.style.display = 'none';
-		chr6.style.display = 'none';
-
-		// displays character input fields based on party size
-		partySize.addEventListener('change', function() {
-			if (partySize.value == 1) {
-				chr1.style.display = 'block';
-				chr2.style.display = 'none';
-				chr3.style.display = 'none';
-				chr4.style.display = 'none';
-				chr5.style.display = 'none';
-				chr6.style.display = 'none';
-			} else if (partySize.value == 2) {
-				chr1.style.display = 'block';
-				chr2.style.display = 'block';
-				chr3.style.display = 'none';
-				chr4.style.display = 'none';
-				chr5.style.display = 'none';
-				chr6.style.display = 'none';
-			} else if (partySize.value == 3) {
-				chr1.style.display = 'block';
-				chr2.style.display = 'block';
-				chr3.style.display = 'block';
-				chr4.style.display = 'none';
-				chr5.style.display = 'none';
-				chr6.style.display = 'none';
-			} else if (partySize.value == 4) {
-				chr1.style.display = 'block';
-				chr2.style.display = 'block';
-				chr3.style.display = 'block';
-				chr4.style.display = 'block';
-				chr5.style.display = 'none';
-				chr6.style.display = 'none';
-			} else if (partySize.value == 5) {
-				chr1.style.display = 'block';
-				chr2.style.display = 'block';
-				chr3.style.display = 'block';
-				chr4.style.display = 'block';
-				chr5.style.display = 'block';
-				chr6.style.display = 'none';
-			} else if (partySize.value == 6) {
-				chr1.style.display = 'block';
-				chr2.style.display = 'block';
-				chr3.style.display = 'block';
-				chr4.style.display = 'block';
-				chr5.style.display = 'block';
-				chr6.style.display = 'block';
+		
+		// display character level fields based on party size
+		let chrLvlFields = [];
+		for (let i = 1; i <= 6; i++) {
+			chrLvlFields.push(document.querySelector(`.chr${i}lvl`));
 			}
-		});		
 
-		// function to calculate total xp needed for party and difficulty
-		const form = document.querySelector('form');
-		form.addEventListener('submit', function(e) {
+			chrLvlFields.forEach(field => field.style.display = 'none');
+
+			partySize.addEventListener('change', function() {
+			let partySizeValue = partySize.value;
+
+			chrLvlFields.forEach((field, i) => {
+				field.style.display = i < partySizeValue ? 'block' : 'none';
+			});
+		});
+
+		//add event listener to form to calculate total xp needed
+		document.querySelector('form').addEventListener('submit', function(e) {
 			e.preventDefault();
-			const partySize = document.getElementById('partySize').value;
-			const chr1 = document.getElementById('chr1').value;
-			const chr2 = document.getElementById('chr2').value;
-			const chr3 = document.getElementById('chr3').value;
-			const chr4 = document.getElementById('chr4').value;
-			const chr5 = document.getElementById('chr5').value;
-			const chr6 = document.getElementById('chr6').value;
 
-			//pass the function the party size and the character levels
-			XPCalc(partySize, chr1, chr2, chr3, chr4, chr5, chr6);
-			
-			//return function results to the page
-			document.getElementById('party').textContent = `Party XP Threshold: ${XPCalc.totalXpParty}`;
-			document.getElementById('easy').textContent = `Easy Mode Encounter XP: ${XPCalc.totalXpEasy}`;
-			document.getElementById('medium').textContent = `Medium Mode Encounter XP: ${XPCalc.totalXpMedium}`;
-			document.getElementById('hard').textContent = `Hard Mode Encounter XP: ${XPCalc.totalXpHard}`;
-			document.getElementById('deadly').textContent = `Deadly Mode Encounter XP: ${XPCalc.totalXpDeadly}`;
+			let partySize = document.getElementById('partySize').value;
+			let chr1 = document.getElementById('chr1lvl').value;
 
+			let chr2 = document.getElementById('chr2lvl').value;
+			let chr3 = document.getElementById('chr3lvl').value;
+			let chr4 = document.getElementById('chr4lvl').value;
+			let chr5 = document.getElementById('chr5lvl').value;
+			let chr6 = document.getElementById('chr6lvl').value;
+
+			// use XPCalculator.ts the formula XPCalc to calculate total xp needed
+			let xpResult = XPCalc(partySize, chr1, chr2, chr3, chr4, chr5, chr6);
+
+			// display total xp needed
+			document.getElementById('Party').textContent = `Total XP Needed: ${xpResult.totalXpParty}`;
+			document.getElementById('easy').textContent = `Easy Difficulty: ${xpResult.totalXpEasy}`;
+			document.getElementById('medium').textContent = `Medium Difficulty: ${xpResult.totalXpMedium}`;
+			document.getElementById('hard').textContent = `Hard Difficulty: ${xpResult.totalXpHard}`;
+			document.getElementById('deadly').textContent = `Deadly Difficulty: ${xpResult.totalXpDeadly}`;
 		});
 	</script>
 </code>	

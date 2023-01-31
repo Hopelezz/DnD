@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <script>
+      function generateEncounter() {
+        // Get party size and character level from form
+        var partySize = document.getElementById("partySize").value;
+        var charLevel = document.getElementById("charLevel").value;
+        
+        // Make API call to get random monster
+        var apiUrl = "http://www.dnd5eapi.co/api/monsters/?challenge_rating=" + charLevel;
+        var request = new XMLHttpRequest();
+        request.open("GET", apiUrl, true);
+        request.onload = function() {
+          var data = JSON.parse(this.response);
+          
+          // Get random monster from API response
+          var randomIndex = Math.floor(Math.random() * data.count);
+          var monster = data.results[randomIndex];
+          
+          // Make API call to get monster details
+          var monsterUrl = monster.url;
+          var monsterRequest = new XMLHttpRequest();
+          monsterRequest.open("GET", monsterUrl, true);
+          monsterRequest.onload = function() {
+            var monsterData = JSON.parse(this.response);
+            
+            // Display monster name, image, and stats
+            document.getElementById("monsterName").innerHTML = monsterData.name;
+            document.getElementById("monsterImage").src = "https://5e.tools/img/MM/" + monsterData.name.toLowerCase().replace(/ /g, "") + ".jpg";
+            document.getElementById("monsterStats").innerHTML = "CR: " + monsterData.challenge_rating + "<br>HP: " + monsterData.hit_points + "<br>AC: " + monsterData.armor_class;
+          };
+          monsterRequest.send();
+        };
+        request.send();
+      }
+    </script>
+  </head>
+  <body>
+    <form>
+      Party Size: <input type="text" id="partySize"><br>
+      Character Level: <input type="text" id="charLevel"><br>
+      <input type="button" value="Generate Encounter" onclick="generateEncounter()">
+    </form>
+    <br>
+    <div>
+      Monster: <span id="monsterName"></span><br>
+      <img id="monsterImage"><br>
+      <div id="monsterStats"></div>
+    </div>
+  </body>
+</html>

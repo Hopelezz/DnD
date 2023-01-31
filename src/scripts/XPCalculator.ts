@@ -1,6 +1,6 @@
 
 //based on the party size and each characters level calculate the total party xp needed
-export default function XPCalc(partySize: number, chr1: number, chr2: number, chr3: number, chr4: number, chr5: number, chr6: number) {
+export default function XPCalc(partySize: number, chr1lvl: number, chr2lvl: number, chr3lvl: number, chr4lvl: number, chr5lvl: number, chr6lvl: number) {
     
         let totalXpParty = 0;
         let totalXpEasy = 0;
@@ -16,49 +16,32 @@ export default function XPCalc(partySize: number, chr1: number, chr2: number, ch
         let deadlyThreshold = [0, 100, 200, 400, 500, 1100, 1400, 1700, 2100, 2400, 2800, 3600, 4500, 5100, 5900, 6800, 7700, 9500, 10000, 11500, 12700];
 
         //Calculates the total xp needed for each character
-        let chr1XpNeeded = XpPerLevel[chr1];
-        let chr2XpNeeded = partySize < 2 ? 0 : XpPerLevel[chr2];
-        let chr3XpNeeded = partySize < 3 ? 0 : XpPerLevel[chr3];
-        let chr4XpNeeded = partySize < 4 ? 0 : XpPerLevel[chr4];
-        let chr5XpNeeded = partySize < 5 ? 0 : XpPerLevel[chr5];
-        let chr6XpNeeded = partySize < 6 ? 0 : XpPerLevel[chr6];
-
-        let chr1XpEasy = easyThreshold[chr1];
-        let chr2XpEasy = partySize < 2 ? 0 : easyThreshold[chr2];
-        let chr3XpEasy = partySize < 3 ? 0 : easyThreshold[chr3];
-        let chr4XpEasy = partySize < 4 ? 0 : easyThreshold[chr4];
-        let chr5XpEasy = partySize < 5 ? 0 : easyThreshold[chr5];
-        let chr6XpEasy = partySize < 6 ? 0 : easyThreshold[chr6];
-
-        let chr1XpMedium = mediumThreshold[chr1];
-        let chr2XpMedium = partySize < 2 ? 0 : mediumThreshold[chr2];
-        let chr3XpMedium = partySize < 3 ? 0 : mediumThreshold[chr3];
-        let chr4XpMedium = partySize < 4 ? 0 : mediumThreshold[chr4];
-        let chr5XpMedium = partySize < 5 ? 0 : mediumThreshold[chr5];
-        let chr6XpMedium = partySize < 6 ? 0 : mediumThreshold[chr6];
-
-        let chr1XpHard = hardThreshold[chr1];
-        let chr2XpHard = partySize < 2 ? 0 : hardThreshold[chr2];
-        let chr3XpHard = partySize < 3 ? 0 : hardThreshold[chr3];
-        let chr4XpHard = partySize < 4 ? 0 : hardThreshold[chr4];
-        let chr5XpHard = partySize < 5 ? 0 : hardThreshold[chr5];
-        let chr6XpHard = partySize < 6 ? 0 : hardThreshold[chr6];
+        let party = [chr1lvl, chr2lvl, chr3lvl, chr4lvl, chr5lvl, chr6lvl];
+        let chrXpNeeded = party.map((chr, index) => partySize > index ? XpPerLevel[chr] : 0);
         
-        let chr1XpDeadly = deadlyThreshold[chr1];
-        let chr2XpDeadly = partySize < 2 ? 0 : deadlyThreshold[chr2];
-        let chr3XpDeadly = partySize < 3 ? 0 : deadlyThreshold[chr3];
-        let chr4XpDeadly = partySize < 4 ? 0 : deadlyThreshold[chr4];
-        let chr5XpDeadly = partySize < 5 ? 0 : deadlyThreshold[chr5];
-        let chr6XpDeadly = partySize < 6 ? 0 : deadlyThreshold[chr6];
-            
+        //Sums the total xp needed for each character
+        let totalXPNeeded = chrXpNeeded.reduce((a, b) => a + b, 0);
+        
+        //Calculates the total xp needed for each character for each difficulty
+        let chrXpEasy = party.map((chr, index) => partySize > index ? easyThreshold[chr] : 0);
+        let chrXpMedium = party.map((chr, index) => partySize > index ? mediumThreshold[chr] : 0);
+        let chrXpHard = party.map((chr, index) => partySize > index ? hardThreshold[chr] : 0);
+        let chrXpDeadly = party.map((chr, index) => partySize > index ? deadlyThreshold[chr] : 0);
+
         //Sums the total xp needed for the Party
-        totalXpParty = chr1XpNeeded + chr2XpNeeded + chr3XpNeeded + chr4XpNeeded + chr5XpNeeded + chr6XpNeeded;
-        totalXpEasy = chr1XpEasy + chr2XpEasy + chr3XpEasy + chr4XpEasy + chr5XpEasy + chr6XpEasy;
-        totalXpMedium = chr1XpMedium + chr2XpMedium + chr3XpMedium + chr4XpMedium + chr5XpMedium + chr6XpMedium;
-        totalXpHard = chr1XpHard + chr2XpHard + chr3XpHard + chr4XpHard + chr5XpHard + chr6XpHard;
-        totalXpDeadly = chr1XpDeadly + chr2XpDeadly + chr3XpDeadly + chr4XpDeadly + chr5XpDeadly + chr6XpDeadly;
-
-        //Returns the total xp needed for the party, and the xp needed for each difficulty
-        return {totalXpParty, totalXpEasy, totalXpMedium, totalXpHard, totalXpDeadly};
+        totalXpParty = totalXPNeeded;
+        totalXpEasy = chrXpEasy.reduce((a, b) => a + b, 0);
+        totalXpMedium = chrXpMedium.reduce((a, b) => a + b, 0);
+        totalXpHard = chrXpHard.reduce((a, b) => a + b, 0);
+        totalXpDeadly = chrXpDeadly.reduce((a, b) => a + b, 0);
+        
+        //Returns the total xp needed for the party for each difficulty
+        return {
+                totalXpParty,
+                totalXpEasy,
+                totalXpMedium,
+                totalXpHard,
+                totalXpDeadly
+        }
+            
 }
-
